@@ -7,18 +7,15 @@ interface ProtectedRouteProps {
   allowedRoles?: UserRole[];
 }
 
-export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  // TODO: Get this from your AuthContext or Redux store
-  const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('userRole') as UserRole;
+export const ProtectedRoute = () => {
+    // Check the flag we set in LoginPage
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
+    // Debugging: Check console if it still fails
+    if (!isAuthenticated) {
+        console.warn("Access denied. Redirecting to Login.");
+        return <Navigate to="/" replace />;
+    }
 
-  if (allowedRoles && !allowedRoles.includes(userRole)) {
-    return <Navigate to="/unauthorized" replace />; // You need to create this page
-  }
-
-  return <Outlet />;
+    return <Outlet />;
 };
