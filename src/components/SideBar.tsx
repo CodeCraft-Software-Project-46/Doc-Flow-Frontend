@@ -20,6 +20,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         { name: "Documents", path: "/document" },
         { name: "Instances", path: "/workflow" },
         { name: "Settings", path: "/settings" },
+        { name: "Audit Logs", path: "/audit-logs" },
+        { name: "Users", path: "/users" },
     ];
 
     return (
