@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     ];
 
     const configMenu = [
-        { name: "Dashboard Builder", path: "/dashboard-builder", icon: LayoutDashboard },
+        { name: "Dashboard Builder", path: "/dashboardBuilder", icon: LayoutDashboard },
         { name: "Analytics & Charts", path: "/analytics", icon: BarChart3 },
         { name: "Document Types", path: "/document-types", icon: Folder },
         { name: "Roles & Users", path: "/roles", icon: Users },
@@ -44,7 +44,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <>
-            {/* Mobile Overlay */}
             {isOpen && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40 md:hidden"

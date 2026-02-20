@@ -3,28 +3,16 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router";
 // Layouts
 import { RootLayout } from "./components/RootLayout";
 
-// Components & Features
-// Note: Ensure you have created this file in src/features/auth/components/
-import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 
-// Pages (Existing)
+import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 import { LoginPage } from "./features/auth/pages/LoginPage";
-import { Dashboard } from "./pages/DashboardPage";
+import { Dashboard } from "./pages/dashboard/DashboardPage.tsx";
 import { DocumentPage } from "./pages/documents/DocumentPage";
 import { WorkflowPage } from "./pages/workflow/WorkFlowPage";
 import { SettingsPage } from "./pages/settings/SettingsPage";
-
-
-
-
-
-
-
-
-// Pages (Future - Member 1 Work)
-
 import { AuditPage } from "./features/admin/pages/AuditPage";
 import { UserManagementPage } from "./features/admin/pages/UserManagementPage";
+import {DashboardBuilder} from "./pages/dashboard/DshboardBuilder.tsx";
 
 export default function App() {
     const routes = createBrowserRouter([
@@ -47,13 +35,12 @@ export default function App() {
                         // Admin Routes
                         { path: "/audit-logs", element: <AuditPage /> },
                         { path: "/users", element: <UserManagementPage /> },
+                        { path: "/dashboardBuilder", element: <DashboardBuilder /> },
                     ]
                 }
             ]
         },
 
-        // 3. Catch-All Route (Fixes 404s)
-        // If user types a wrong URL, send them to Dashboard (which redirects to login if needed)
         { path: "*", element: <Navigate to="/dashboard" replace /> }
     ]);
 
