@@ -59,6 +59,7 @@ export default function SLADonut() {
         <div className="space-y-3">
           {data.map((item) => (
             <div key={item.name} className="flex items-center gap-3">
+              {/* eslint-disable-next-line */}
               <div
                 className="w-4 h-4 rounded-full flex-shrink-0"
                 style={{ backgroundColor: item.color } as React.CSSProperties}

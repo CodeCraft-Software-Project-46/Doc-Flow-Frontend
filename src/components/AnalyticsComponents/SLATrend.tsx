@@ -1,6 +1,3 @@
-// filepath: SLATrend.tsx
-// Line chart showing daily SLA compliance % for the last 7 days
-
 export default function SLATrend() {
   const TREND_DATA = [
     { day: "Mon", c: 74 }, { day: "Tue", c: 78 }, { day: "Wed", c: 80 },

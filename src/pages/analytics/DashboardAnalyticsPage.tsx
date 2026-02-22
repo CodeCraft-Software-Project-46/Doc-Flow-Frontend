@@ -5,6 +5,8 @@ import Sidebar from "../../components/SideBar";
 import Header from "../../components/Header";
 import SLADonut from "../../components/AnalyticsComponents/SLADonut";
 import SLATrend from "../../components/AnalyticsComponents/SLATrend";
+import BottleneckSteps from "../../components/AnalyticsComponents/BottleneckSteps";
+import UserSLAList from "../../components/AnalyticsComponents/UserSLAList";
 
 type Tab = "overall" | "workflow";
 
@@ -140,9 +142,22 @@ export function DashboardAnalyticsPage() {
               <SLADonut />
               <SLATrend />
             </div>
+
+            {/* Additional Analysis Charts */}
+            <div className="grid grid-cols-2 gap-4">
+              <BottleneckSteps />
+              <UserSLAList />
+            </div>
           </div>
         )}
+
+        {tab === "workflow" && (
+          <div className="space-y-5">
+            <h2 className="text-xl font-bold text-slate-900">Workflow Analytics</h2>
+            <p className="text-slate-500">Workflow Analytics — coming soon</p>
           </div>
+        )}
+        </div>
           </div>
         </main>
       </div>

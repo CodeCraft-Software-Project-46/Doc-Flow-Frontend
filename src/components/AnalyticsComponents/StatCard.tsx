@@ -13,6 +13,7 @@ export default function StatCard({ icon, value, label, sub, color, small = false
   return (
     <div className={`bg-white rounded-2xl shadow-sm flex items-center gap-4 ${small ? "p-4" : "p-6"}`}>
       {/* Icon circle */}
+      {/* eslint-disable-next-line */}
       <div
         className={`rounded-xl flex items-center justify-center flex-shrink-0 ${small ? "w-10 h-10 text-lg" : "w-12 h-12 text-2xl"}`}
         style={{ backgroundColor: `${color}20` } as unknown as React.CSSProperties}
