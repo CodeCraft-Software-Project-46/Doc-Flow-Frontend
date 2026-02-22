@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import DashboardStats from "../../components/DashboardBuilderComponents/DashboardStats";
-import {DashboardList} from "../../components/DashboardBuilderComponents/DashboardList.tsx";
-import {DashboardFilters} from "../../components/DashboardBuilderComponents/DashboardFilter.tsx";
-import {CreateDashboardModal} from "../../components/DashboardBuilderComponents/CreateDashboardModal.tsx";
+import { DashboardList } from "../../components/DashboardBuilderComponents/DashboardList";
+import { DashboardFilters } from "../../components/DashboardBuilderComponents/DashboardFilter";
+import { CreateDashboardModal } from "../../components/DashboardBuilderComponents/CreateDashboardModal";
+import DashboardCanvasPage from "../../components/DashboardBuilderComponents/DashboardCanvasPage";
+
 export interface Dashboard {
     id: number;
     name: string;
@@ -10,79 +12,73 @@ export interface Dashboard {
     role: string;
     widgets: number;
     status: "Active" | "Draft" | "Disabled";
-    isDefault?: boolean;
     updatedAt: string;
 }
 
 export const DashboardBuilder: React.FC = () => {
-    // samples
     const [dashboards, setDashboards] = useState<Dashboard[]>([
         {
             id: 1,
             name: "Staff Dashboard",
-            description: "Default dashboard for staff and initiators",
+            description: "Default dashboard for staff",
             role: "Staff / Initiator",
             widgets: 6,
             status: "Active",
-            isDefault: true,
             updatedAt: "2/19/2026",
         },
-        {
-            id: 2,
-            name: "Approver Dashboard",
-            description: "Default dashboard for approvers",
-            role: "Approver",
-            widgets: 6,
-            status: "Active",
-            isDefault: true,
-            updatedAt: "2/16/2026",
-        },
     ]);
-    const [search, setSearch] = useState("");
-    const [status, setStatus] = useState("All");
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [search, setSearch]               = useState("");
+    const [status, setStatus]               = useState("All");
+    const [isModalOpen, setIsModalOpen]     = useState(false);
+    const [canvasDashboard, setCanvasDashboard] = useState<Dashboard | null>(null);
 
-    const filteredDashboards = dashboards.filter((dashboard) => {
-        const matchesSearch = dashboard.name
-            .toLowerCase()
-            .includes(search.toLowerCase());
-
-        const matchesStatus =
-            status === "All" || dashboard.status === status;
-
+    const filteredDashboards = dashboards.filter((d) => {
+        const matchesSearch = d.name.toLowerCase().includes(search.toLowerCase());
+        const matchesStatus = status === "All" || d.status === status;
         return matchesSearch && matchesStatus;
     });
 
-    // Action Handlers
-    const handleEdit = (id: number) => {
-        console.log("Edit", id);
-    };
-
-    const handleView = (id: number) => {
-        console.log("View", id);
-    };
-
-    const handleDuplicate = (dashboard: Dashboard) => {
-        const newDashboard = {
-            ...dashboard,
+    const handleCreateDashboard = (data: {
+        name: string;
+        description: string;
+        roles: string[];
+    }) => {
+        const newDashboard: Dashboard = {
             id: Date.now(),
-            name: dashboard.name + " Copy",
+            name: data.name,
+            description: data.description,
+            role: data.roles.join(", "),
+            widgets: 0,
+            status: "Draft",
+            updatedAt: new Date().toLocaleDateString(),
         };
-        setDashboards([...dashboards, newDashboard]);
+
+        setDashboards((prev) => [...prev, newDashboard]);
+        setIsModalOpen(false);
+        setCanvasDashboard(newDashboard);
     };
 
-    const handleDelete = (id: number) => {
-        setDashboards(dashboards.filter((d) => d.id !== id));
+
+    const handleEdit = (dashboard: Dashboard) => {
+        setCanvasDashboard(dashboard);
+    };
+    const handleBack = () => {
+        setCanvasDashboard(null);
     };
 
-    const handleDownload = (id: number) => {
-        console.log("Download", id);
-    };
+    if (canvasDashboard) {
+        return (
+            <DashboardCanvasPage
+                dashboard={canvasDashboard}
+                onBack={handleBack}
+            />
+        );
+    }
+
 
     return (
-        <div className="p-0 bg-gray-50 min-h-screen space-y-6">
-
+        <div className="p-6 bg-gray-50 min-h-screen space-y-6">
             <div className="flex justify-between items-center">
                 <DashboardFilters
                     search={search}
@@ -90,32 +86,30 @@ export const DashboardBuilder: React.FC = () => {
                     status={status}
                     setStatus={setStatus}
                 />
-
-
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" onClick={()=>setIsModalOpen(true)}>
+                <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                    onClick={() => setIsModalOpen(true)}
+                >
                     + Create Dashboard
                 </button>
             </div>
 
-            {/* Stats */}
             <DashboardStats dashboards={filteredDashboards} />
 
-            {/* Dashboard List */}
             <DashboardList
                 dashboards={filteredDashboards}
                 onEdit={handleEdit}
-                onView={handleView}
-                onDuplicate={handleDuplicate}
-                onDelete={handleDelete}
-                onDownload={handleDownload}
+                onView={() => {}}
+                onDuplicate={() => {}}
+                onDelete={() => {}}
+                onDownload={() => {}}
             />
 
             <CreateDashboardModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+                onSubmit={handleCreateDashboard}
             />
         </div>
-
     );
 };
-

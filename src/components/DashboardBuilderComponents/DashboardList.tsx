@@ -10,14 +10,17 @@ interface Props {
     onDownload: (id: number) => void;
 }
 
+
+
 export const DashboardList: React.FC<Props> = ({
-                                            dashboards,
-                                            onEdit,
-                                            onView,
-                                            onDuplicate,
-                                            onDelete,
-                                            onDownload,
-                                        }) => {
+                                                   dashboards,
+                                                   onEdit,
+                                                   onView,
+                                                   onDuplicate,
+                                                   onDelete,
+                                                   onDownload,
+
+                                               }) => {
     return (
         <div className="space-y-4">
             {dashboards.map((dashboard) => (
