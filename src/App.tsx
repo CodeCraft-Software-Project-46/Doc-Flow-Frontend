@@ -12,7 +12,7 @@ import { WorkflowPage } from "./pages/workflow/WorkFlowPage";
 import { SettingsPage } from "./pages/settings/SettingsPage";
 import { AuditPage } from "./features/admin/pages/AuditPage";
 import { UserManagementPage } from "./features/admin/pages/UserManagementPage";
-import {DashboardBuilder} from "./pages/dashboard/DshboardBuilder.tsx";
+import { DashboardBuilder} from "./pages/dashboard/DashboardBuilder.tsx";
 
 export default function App() {
     const routes = createBrowserRouter([
