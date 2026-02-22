@@ -10,14 +10,12 @@ interface StatCardProps {
 }
 
 export default function StatCard({ icon, value, label, sub, color, small = false }: StatCardProps) {
-  const iconBgColor = `${color}20`; // 20% opacity
-  
   return (
     <div className={`bg-white rounded-2xl shadow-sm flex items-center gap-4 ${small ? "p-4" : "p-6"}`}>
       {/* Icon circle */}
       <div
         className={`rounded-xl flex items-center justify-center flex-shrink-0 ${small ? "w-10 h-10 text-lg" : "w-12 h-12 text-2xl"}`}
-        style={{ backgroundColor: iconBgColor }}
+        style={{ backgroundColor: `${color}20` } as unknown as React.CSSProperties}
       >
         {icon}
       </div>

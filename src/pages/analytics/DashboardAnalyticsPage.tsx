@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router";
 import StatCard from "../../components/AnalyticsComponents/StatCard";
 import Sidebar from "../../components/SideBar";
 import Header from "../../components/Header";
+import SLADonut from "../../components/AnalyticsComponents/SLADonut";
+import SLATrend from "../../components/AnalyticsComponents/SLATrend";
 
 type Tab = "overall" | "workflow";
 
@@ -131,6 +133,12 @@ export function DashboardAnalyticsPage() {
                   <span className="text-red-500 text-sm font-semibold">▼ -1%</span>
                 </div>
               </div>
+            </div>
+
+            {/* SLA Charts */}
+            <div className="grid grid-cols-2 gap-4">
+              <SLADonut />
+              <SLATrend />
             </div>
           </div>
         )}
