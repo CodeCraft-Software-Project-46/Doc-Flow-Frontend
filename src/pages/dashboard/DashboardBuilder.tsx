@@ -99,7 +99,7 @@ export const DashboardBuilder: React.FC = () => {
 
             {/* Dashboard List */}
             <DashboardList
-                dashboards={dashboards}
+                dashboards={filteredDashboards}
                 onEdit={handleEdit}
                 onView={handleView}
                 onDuplicate={handleDuplicate}
