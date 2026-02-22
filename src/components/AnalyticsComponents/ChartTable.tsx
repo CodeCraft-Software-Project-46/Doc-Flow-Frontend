@@ -30,16 +30,8 @@ export default function ChartTable({ charts, onEdit, onDelete }: ChartTableProps
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-
-      {/* Table header bar */}
-      <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-        <span className="font-semibold text-slate-900 text-base">Configured Charts</span>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
 
           {/* Column headers */}
           <thead>
@@ -146,6 +138,5 @@ export default function ChartTable({ charts, onEdit, onDelete }: ChartTableProps
           </tbody>
         </table>
       </div>
-    </div>
   );
 }
