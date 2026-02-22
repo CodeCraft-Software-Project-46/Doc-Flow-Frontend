@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 type Props = {
     isOpen: boolean;
     onClose: () => void;
+    onSubmit: (data: {
+        name: string;
+        description: string;
+        roles: string[];
+    }) => void;
 };
 
 const rolesList = [
@@ -16,16 +21,14 @@ const rolesList = [
 export const CreateDashboardModal: React.FC<Props> = ({
                                                           isOpen,
                                                           onClose,
+                                                          onSubmit, // ✅ FIXED
                                                       }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
     const [errors, setErrors] = useState<{ name?: string; roles?: string }>({});
-    const [touched, setTouched] = useState<{ name?: boolean; roles?: boolean }>(
-        {}
-    );
+    const [touched, setTouched] = useState<{ name?: boolean; roles?: boolean }>({});
 
-    // reset data when close
     useEffect(() => {
         if (!isOpen) {
             setName("");
@@ -74,7 +77,6 @@ export const CreateDashboardModal: React.FC<Props> = ({
 
     const handleSubmit = () => {
         setTouched({ name: true, roles: true });
-
         validateName(name);
 
         if (selectedRoles.length === 0) {
@@ -84,11 +86,8 @@ export const CreateDashboardModal: React.FC<Props> = ({
             }));
         }
 
-        if (
-            name.trim().length >= 3 &&
-            selectedRoles.length > 0
-        ) {
-            console.log({
+        if (name.trim().length >= 3 && selectedRoles.length > 0) {
+            onSubmit({
                 name,
                 description,
                 roles: selectedRoles,
@@ -124,7 +123,7 @@ export const CreateDashboardModal: React.FC<Props> = ({
                     </button>
                 </div>
 
-                {/*name*/}
+                {/* name */}
                 <div>
                     <label
                         className={`block text-sm font-medium mb-1 ${
@@ -150,8 +149,7 @@ export const CreateDashboardModal: React.FC<Props> = ({
                                 name: true,
                             }))
                         }
-                        className={`w-full border rounded-lg px-3 py-2 outline-none transition
-                            ${
+                        className={`w-full border rounded-lg px-3 py-2 outline-none transition ${
                             errors.name && touched.name
                                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
                                 : "border-gray-300 focus:ring-2 focus:ring-blue-500"
@@ -192,8 +190,7 @@ export const CreateDashboardModal: React.FC<Props> = ({
                     </label>
 
                     <div
-                        className={`flex flex-wrap gap-4 p-3 rounded-lg border transition
-                            ${
+                        className={`flex flex-wrap gap-4 p-3 rounded-lg border transition ${
                             errors.roles && touched.roles
                                 ? "border-red-500"
                                 : "border-gray-200"
@@ -234,8 +231,7 @@ export const CreateDashboardModal: React.FC<Props> = ({
                     <button
                         onClick={handleSubmit}
                         disabled={!isFormValid}
-                        className={`px-4 py-2 rounded-lg text-white transition
-                            ${
+                        className={`px-4 py-2 rounded-lg text-white transition ${
                             isFormValid
                                 ? "bg-blue-600 hover:bg-blue-700"
                                 : "bg-blue-300 cursor-not-allowed"
