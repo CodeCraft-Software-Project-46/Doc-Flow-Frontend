@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DashboardStats from "../../components/DashboardBuilderComponents/DashboardStats";
 import {DashboardList} from "../../components/DashboardBuilderComponents/DashboardList.tsx";
 import {DashboardFilters} from "../../components/DashboardBuilderComponents/DashboardFilter.tsx";
+import {CreateDashboardModal} from "../../components/DashboardBuilderComponents/CreateDashboardModal.tsx";
 export interface Dashboard {
     id: number;
     name: string;
@@ -39,6 +40,8 @@ export const DashboardBuilder: React.FC = () => {
     ]);
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("All");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const filteredDashboards = dashboards.filter((dashboard) => {
         const matchesSearch = dashboard.name
@@ -89,7 +92,7 @@ export const DashboardBuilder: React.FC = () => {
                 />
 
 
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" onClick={()=>setIsModalOpen(true)}>
                     + Create Dashboard
                 </button>
             </div>
@@ -106,7 +109,13 @@ export const DashboardBuilder: React.FC = () => {
                 onDelete={handleDelete}
                 onDownload={handleDownload}
             />
+
+            <CreateDashboardModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </div>
+
     );
 };
 
