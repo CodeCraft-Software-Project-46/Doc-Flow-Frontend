@@ -13,11 +13,15 @@ import { SettingsPage } from "./pages/settings/SettingsPage";
 import { AuditPage } from "./features/admin/pages/AuditPage";
 import { UserManagementPage } from "./features/admin/pages/UserManagementPage";
 import {DashboardBuilder} from "./pages/dashboard/DshboardBuilder.tsx";
+import { DashboardAnalyticsPage } from "./pages/analytics/DashboardAnalyticsPage.tsx";
+import {ConfigurationPage} from "./pages/analytics/ConfigurationPage.tsx";
 
 export default function App() {
     const routes = createBrowserRouter([
         // 1. Login Route
         { path: "/", element: <LoginPage /> },
+        {path: "/analytics", element: <DashboardAnalyticsPage />},
+        {path: "/configuration", element: <ConfigurationPage />},
 
         // 2. Protected App Routes
         {

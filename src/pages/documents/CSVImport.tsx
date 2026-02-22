@@ -6,7 +6,6 @@ import {
   Table, 
   Tag, 
   Space, 
-  Switch, 
   Divider, 
   Form, 
   Input, 
@@ -15,7 +14,6 @@ import {
 import { 
   CloudSyncOutlined, 
   PlusOutlined, 
-  DeleteOutlined, 
   FileTextOutlined 
 } from '@ant-design/icons';
 
