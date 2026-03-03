@@ -9,25 +9,35 @@ import {
   Tag, 
   Space, 
   Popconfirm,
-  message 
+  message,
+  Modal,
+  Typography,
+  Spin
 } from 'antd';
 import { 
   DatabaseOutlined, 
   DeleteOutlined, 
   HistoryOutlined, 
-  SaveOutlined 
+  SaveOutlined,
+  RobotOutlined,
+  FileTextOutlined
 } from '@ant-design/icons';
 
+const { Paragraph, Text } = Typography;
+
 export const StorageManagement: React.FC = () => {
-  // Requirement: Retain completed documents for 7 years (configurable)
   const [retentionPeriod, setRetentionPeriod] = useState<number>(7);
   
-  // Mock data for Storage Space Management
+  // AI Summary States
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [currentSummary, setCurrentSummary] = useState<string>('');
+  const [selectedDocName, setSelectedDocName] = useState<string>('');
+  
   const totalStorage = 1000; // GB
   const usedStorage = 250; // GB
   const usagePercent = (usedStorage / totalStorage) * 100;
 
-  // Mock data for File organization by document type and date
   const [documents, setDocuments] = useState([
     { key: '1', name: 'Invoice_001.pdf', type: 'Financial', date: '2024-01-15', size: '2.5 MB', status: 'Active' },
     { key: '2', name: 'Contract_A.pdf', type: 'Legal', date: '2023-11-20', size: '5.1 MB', status: 'Active' },
@@ -47,6 +57,20 @@ export const StorageManagement: React.FC = () => {
     );
     setDocuments(newDocs);
     message.success('Document archived successfully');
+  };
+
+  // NEW: Handle AI Summary Generation
+  const handleViewSummary = (docName: string) => {
+    setSelectedDocName(docName);
+    setIsSummaryModalOpen(true);
+    setLoadingSummary(true);
+    setCurrentSummary('');
+
+    // TODO: Replace with actual Axios call to your Django/AI backend
+    setTimeout(() => {
+      setCurrentSummary(`This is an automatically generated AI summary for ${docName}. The document outlines key deliverables, associated costs, and timelines. It requires approval from the department head before the end of the current fiscal quarter.`);
+      setLoadingSummary(false);
+    }, 1500);
   };
 
   const columns = [
@@ -82,14 +106,25 @@ export const StorageManagement: React.FC = () => {
       key: 'action',
       render: (_: any, record: any) => (
         <Space size="middle">
+          {/* NEW: AI Summary Button */}
+          <Button 
+            type="primary" 
+            ghost 
+            icon={<RobotOutlined />} 
+            onClick={() => handleViewSummary(record.name)}
+            size="small"
+          >
+            AI Summary
+          </Button>
+
           {record.status === 'Active' && (
             <Popconfirm title="Archive this document?" onConfirm={() => handleArchive(record.key)}>
-              <Button type="text" icon={<HistoryOutlined />} title="Archive">
+              <Button type="text" icon={<HistoryOutlined />} title="Archive" size="small">
                 Archive
               </Button>
             </Popconfirm>
           )}
-          <Button type="text" danger icon={<DeleteOutlined />} title="Delete" disabled={record.status === 'Active'}>
+          <Button type="text" danger icon={<DeleteOutlined />} title="Delete" disabled={record.status === 'Active'} size="small">
             Delete
           </Button>
         </Space>
@@ -99,9 +134,7 @@ export const StorageManagement: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Row: Storage Metrics & Retention Settings */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Metric 1: Storage Usage */}
         <Card className="shadow-sm">
           <Statistic 
             title="Storage Usage" 
@@ -112,7 +145,6 @@ export const StorageManagement: React.FC = () => {
           <Progress percent={usagePercent} status="active" className="mt-2" />
         </Card>
 
-        {/* Metric 2: Retention Policy */}
         <Card className="shadow-sm flex flex-col justify-between">
           <div>
             <h4 className="text-gray-500 mb-2">Retention Policy (Years)</h4>
@@ -132,7 +164,6 @@ export const StorageManagement: React.FC = () => {
           </p>
         </Card>
 
-        {/* Metric 3: Quick Stats */}
         <Card className="shadow-sm">
             <div className="flex justify-between items-center h-full">
                 <Statistic title="Total Files" value={1205} />
@@ -141,7 +172,6 @@ export const StorageManagement: React.FC = () => {
         </Card>
       </div>
 
-      {/* Main Content: File Organization Browser */}
       <Card title="File Organization & Archives" className="shadow-sm">
         <Table 
           columns={columns} 
@@ -149,6 +179,45 @@ export const StorageManagement: React.FC = () => {
           pagination={{ pageSize: 5 }} 
         />
       </Card>
+
+      {/* NEW: AI Summary Modal */}
+      <Modal
+        title={
+          <Space>
+            <RobotOutlined style={{ color: '#1677ff' }} />
+            <span>AI Document Summary</span>
+          </Space>
+        }
+        open={isSummaryModalOpen}
+        onCancel={() => setIsSummaryModalOpen(false)}
+        footer={[
+          <Button key="close" onClick={() => setIsSummaryModalOpen(false)}>
+            Close
+          </Button>,
+          <Button key="open-doc" type="primary" icon={<FileTextOutlined />}>
+            Open Full Document
+          </Button>
+        ]}
+      >
+        <div className="py-4">
+          <Text type="secondary" className="block mb-4">
+            Document: <strong>{selectedDocName}</strong>
+          </Text>
+          
+          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 min-h-[100px]">
+            {loadingSummary ? (
+              <div className="flex flex-col items-center justify-center py-4 text-slate-400">
+                <Spin className="mb-2" />
+                <span>Generating concise summary...</span>
+              </div>
+            ) : (
+              <Paragraph className="text-slate-700 m-0">
+                {currentSummary}
+              </Paragraph>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
