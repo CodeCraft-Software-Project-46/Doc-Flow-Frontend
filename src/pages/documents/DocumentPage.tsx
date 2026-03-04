@@ -1,9 +1,8 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import { ManualUpload } from './ManualUpload';
-import { CSVImport } from './CSVImport';
+import { OneDriveImport } from './OneDriveImport';
 import { StorageManagement } from './StorageManagement';
-import { WorkflowMapping } from './WorkflowMapping';
 
 export const DocumentPage = () => {
     const items = [
@@ -14,16 +13,11 @@ export const DocumentPage = () => {
         },
         {
             key: '2',
-            label: 'OneDrive / CSV Import',
-            children: <CSVImport />,
+            label: 'OneDrive Import',
+            children: <OneDriveImport />,
         },
         {
             key: '3',
-            label: 'Workflow Mapping',
-            children: <WorkflowMapping />,
-        },
-        {
-            key: '4',
             label: 'Storage & Retention',
             children: <StorageManagement />,
         },
